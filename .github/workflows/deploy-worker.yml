@@ -40,8 +40,12 @@ jobs:
           node-version: 24
           cache: npm
 
-      - name: Install dependencies
-        run: npm ci --include=optional
+      - name: Install Dependencies
+        run: npm ci
+
+      # 关键步骤：在 CI (Linux) 上补齐 Tailwind v4 的 Linux 原生二进制包，不写入 package.json
+      - name: Fix Tailwind Oxide for Linux CI
+        run: npm install --no-save @tailwindcss/oxide-linux-x64-gnu
 
       - name: Build frontend static assets
         run: npm run build:frontend
@@ -52,3 +56,5 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy
+          # 填入你的构建产物输出目录（如 frontend/dist）
+          directory: frontend/dist
