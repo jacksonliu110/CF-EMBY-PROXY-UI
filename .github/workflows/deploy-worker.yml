@@ -58,3 +58,11 @@ jobs:
           command: deploy
           # 填入你的构建产物输出目录（如 frontend/dist）
           directory: frontend/dist
+          # 使用 secret 模式定义环境变量，避免配置重置
+          secrets: |
+            ADMIN_PASS
+            JWT_SECRET
+
+        env:
+          ADMIN_PASS: ${{ secrets.ADMIN_PASS }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
